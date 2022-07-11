@@ -41,6 +41,7 @@ pipeline {
                 CF_JIRA_PROJECT_PREFIX = 'CR'
                 CF_WORKFLOW_NAME = "${env.JOB_NAME}"
                 CF_WORKFLOW_URL = "${env.BUILD_URL}"
+                CF_GITHUB_TOKEN = credentials('CF_GITHUB_TOKEN')
             }
             agent {
                 docker { 
@@ -56,6 +57,7 @@ pipeline {
                     export CF_GIT_BRANCH="${GIT_BRANCH#*/}"
                     WITHOUT_POSTFIX="${GIT_URL%.*}"
                     export CF_GIT_REPO="${WITHOUT_POSTFIX#*//*/}"
+                    export CF_GIT_PROVIDER=
                     echo $(env)
                     node --version
                     cd /code && yarn start'''
