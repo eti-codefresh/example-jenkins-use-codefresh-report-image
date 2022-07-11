@@ -45,8 +45,10 @@ pipeline {
             steps {
                 sh '''
                     # add git branch
-                    export CF_GIT_BRANCH="${GIT_BRANCH#*/}"
+                    CF_GIT_BRANCH="${GIT_BRANCH#*/}"
+                    CF_GIT_REPO="${${GIT_URL#*//*/}%.*}"
                     VERSION="0.0.83"
+
                     env | cut -f 1 -d "=" | grep -E "^CF_"  > cf_env
                     echo "Provided env vars: $(cat cf_env|xargs echo)"
                     docker run --env-file=cf_env "quay.io/codefresh/codefresh-report-image:$VERSION"
