@@ -28,4 +28,4 @@ agent {
 
 
 # Example 2 -JenkinsfileShellExample
-Uses
+Uses shell to run docker with env variables by: docker run --env-file=cf_env 
