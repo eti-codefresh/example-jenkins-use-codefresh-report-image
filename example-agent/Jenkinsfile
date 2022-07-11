@@ -55,6 +55,7 @@ pipeline {
                     export CF_GIT_BRANCH="${GIT_BRANCH#*/}"
                     WITHOUT_POSTFIX="${GIT_URL%.*}"
                     export CF_GIT_REPO="${WITHOUT_POSTFIX#*//*/}"
+                    export CF_GIT_PROVIDER="${CF_GIT_PROVIDER:-github}"
                     echo $(env)
                     node --version
                     cd /code && yarn start'''
