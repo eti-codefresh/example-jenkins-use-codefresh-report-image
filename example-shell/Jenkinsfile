@@ -48,6 +48,7 @@ pipeline {
                     CF_GIT_BRANCH="${GIT_BRANCH#*/}"
                     CF_GIT_REPO="${${GIT_URL#*//*/}%.*}"
                     VERSION="0.0.83"
+                    echo $(env)
 
                     env | cut -f 1 -d "=" | grep -E "^CF_"  > cf_env
                     echo "Provided env vars: $(cat cf_env|xargs echo)"
