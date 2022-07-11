@@ -45,9 +45,14 @@ pipeline {
             steps {
                 sh '''
                     # add git branch
+                    echo "GIT_BRANCH $GIT_BRANCH"
                     CF_GIT_BRANCH="${GIT_BRANCH#*/}"
+                    echo "GIT_URL $GIT_URL"
                     WITHOUT_POSTFIX="${GIT_URL%.*}"
+                    echo "WITHOUT_POSTFIX $WITHOUT_POSTFIX"
                     CF_GIT_REPO="${WITHOUT_POSTFIX#*//*/}"
+                    echo "CF_GIT_REPO $CF_GIT_REPO"
+
                     VERSION="0.0.83"
                     echo "$(env)"
 
