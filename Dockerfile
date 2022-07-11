@@ -1,2 +1,2 @@
 FROM alpine
-CMD ["echo", "Build image !"]
+CMD ["echo", "Build image ! Changed"]
