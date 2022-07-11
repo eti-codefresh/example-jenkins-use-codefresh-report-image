@@ -6,8 +6,8 @@ Using Pipeline configured with
 * SCM: GIT
 * Repositories: https://github.com/codefresh-io/example-jenkins-use-codefresh-report-image.git
 * Script path: 
-** example-agent/Jenkinsfile
-** example-shell/Jenkinsfile
+  * example-agent/Jenkinsfile 
+  * example-shell/Jenkinsfile
 
 
 When the pipeline is run, it pulls the script from repo and run it. 
