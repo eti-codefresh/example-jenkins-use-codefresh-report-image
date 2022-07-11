@@ -52,7 +52,7 @@ pipeline {
             steps {
                 sh '''
                     # add git branch
-                    CF_BRANCH="${GIT_BRANCH#*/}"
+                    CF_GIT_BRANCH="${GIT_BRANCH#*/}"
                     
                     echo $(env)
                     node --version
