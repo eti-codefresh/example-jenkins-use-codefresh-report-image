@@ -39,8 +39,6 @@ pipeline {
                         A message with embedded issue ( i.e. CR-11027 )
                         that would be use query jira for the ticket '''
                 CF_JIRA_PROJECT_PREFIX = 'CR'
-                CF_WORKFLOW_NAME = "${env.JOB_NAME}"
-                CF_WORKFLOW_URL = "${env.BUILD_URL}"
                 CF_GITHUB_TOKEN = credentials('CF_GITHUB_TOKEN')
             }
             agent {
@@ -52,6 +50,8 @@ pipeline {
             }
             steps {
                 sh '''
+                    CF_WORKFLOW_NAME = "${env.JOB_NAME}"
+                    CF_WORKFLOW_URL = "${env.BUILD_URL}"
                     # add git branch
                     export CF_GIT_PROVIDER="${CF_GIT_PROVIDER:-github}"
                     export CF_GIT_BRANCH="${GIT_BRANCH#*/}"
