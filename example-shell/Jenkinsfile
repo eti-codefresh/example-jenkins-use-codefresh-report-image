@@ -28,35 +28,53 @@ pipeline {
             }
         }
         
-        stage('report image') {
-            environment {
-                CF_IMAGE=credentials('CF_IMAGE')
-                CF_HOST = credentials('CF_RT_HOST')
-                CF_API_KEY = credentials('CF_API_KEY')
-                CF_CONTAINER_REGISTRY_INTEGRATION= 'docker'
-                CF_JIRA_INTEGRATION= 'jira'
-                CF_JIRA_MESSAGE= '''
-                        A message with embedded issue ( i.e. CR-11027 )
-                        that would be use query jira for the ticket 
-                        '''
-                CF_JIRA_PROJECT_PREFIX = 'CR'
-                CF_GITHUB_TOKEN = credentials('CF_GITHUB_TOKEN')
-                CF_WORKFLOW_NAME="${env.JOB_NAME}"
-                CF_WORKFLOW_URL="${env.BUILD_URL}"
-            }
-            steps {
-                sh '''
-                    # add git branch
-                    export CF_GIT_PROVIDER="${CF_GIT_PROVIDER:-github}"
-                    WITHOUT_POSTFIX="${GIT_URL%.*}"
-                    export CF_GIT_REPO="${WITHOUT_POSTFIX#*//*/}"
-                    # slice branch name from repo/branch
-                    export CF_GIT_BRANCH="${GIT_BRANCH#*/}"
-                    env | cut -f 1 -d "=" | grep -E "^CF_"  > cf_env
-                    docker run --env-file=cf_env "quay.io/codefresh/codefresh-report-image:latest"
-                '''
-            }
+stage('report image') {
+    environment {
+        # The URL to the cluster with the Codefresh runtime to integrate with.
+        CF_HOST= http://local.codefresh.io
+        # The key to authenticate the GitHub Actions user to Codefresh.
+        CF_API_KEY= 54545454545454546.58555455 # Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. Documentation- https://www.jenkins.io/doc/book/using/using-credentials
+        # The name of the image to report to Codefresh.
+        CF_IMAGE= quay.io/eti-test/test:1.00
+        # Registry integration name
+        CF_CONTAINER_REGISTRY_INTEGRATION= test
+        # The the git repository used for building the image
+        CF_GIT_REPO=
+        # The git integration type use (i.e. github)
+        CF_GIT_PROVIDER=
+        # The token for Git integration.
+        CF_GITHUB_TOKEN= 35454134144514541212121.2545225445/kbg # Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. Documentation- https://www.jenkins.io/doo/doc/book/using/using-credentials
+        # When explicit authentication used: For gitlab use, authenticate with a gitlab-token
+        CF_GITLAB_TOKEN=
+        # Bitbucket username
+        CF_BITBUCKET_USERNAME=
+        # Bitbucket password
+        CF_BITBUCKET_PASSWORD=
+        # Bitbucket server username
+        CF_BITBUCKET_USERNAME=
+        # Bitbucket server password
+        CF_BITBUCKET_PASSWORD=
+        # Bitbucket server host url
+        CF_BITBUCKET_HOST_URL=
+        # The Jira project prefix that identifies the ticket number for which to retrieve information.
+        CF_JIRA_PROJECT_PREFIX=
+        # The Jira message for the `CF_JIRA_PROJECT_PREFIX` to add to the image.
+        CF_JIRA_MESSAGE=
+    }
+    steps {
+        sh '''
+        # add git branch
+        export CF_GIT_PROVIDER="${CF_GIT_PROVIDER:-github}"
+        WITHOUT_POSTFIX="${GIT_URL%.*}"
+        export CF_GIT_REPO="${WITHOUT_POSTFIX#*//*/}"
+        # slice branch name from repo/branch
+        export CF_GIT_BRANCH="${GIT_BRANCH#*/}"
+        env | cut -f 1 -d "=" | grep -E "^CF_"  > cf_env
+        docker run --env-file=cf_env "quay.io/codefresh/codefresh-report-image:latest"
+        '''
         }
+    }
+
         
     }
 }
