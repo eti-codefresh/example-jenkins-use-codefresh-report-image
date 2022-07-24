@@ -29,20 +29,21 @@ pipeline {
         }
         
 
+
 stage('report image') {
     environment {
         // Name of runtime to implement the enrichment
-        CF_HOST= 'http://local.codefresh.io'
+        CF_HOST= credentials('CF_RT_HOST')
 
         // Codefresh API key !! Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. !!
         // Documentation - https://www.jenkins.io/doc/book/using/using-credentials
         CF_API_KEY= '54545454545454546.58555455'
 
         // Image path to enrich
-        CF_IMAGE= 'quay.io/eti-test/test:1.00'
+        CF_IMAGE= credentials('CF_IMAGE')
 
         // Name of Container registry integration
-        CF_CONTAINER_REGISTRY_INTEGRATION= 'test'
+        CF_CONTAINER_REGISTRY_INTEGRATION= 'docker'
 
 //         // The the git repository used for building the image
 //         CF_GIT_REPO= ''
@@ -52,9 +53,9 @@ stage('report image') {
 
         // GitHub Access token !! Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. !!
         // Documentation - https://www.jenkins.io/doc/book/using/using-credentials
-        CF_GITHUB_TOKEN= '35454134144514541212121.2545225445/kbg'
+        CF_GITHUB_TOKEN= credentials('CF_GITHUB_TOKEN')
 
-        // When explicit authentication used: For gitlab use, authenticate with a gitlab-token !! Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. !!
+//         // When explicit authentication used: For gitlab use, authenticate with a gitlab-token !! Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. !!
 //         // Documentation - https://www.jenkins.io/doc/book/using/using-credentials
 //         CF_GITLAB_TOKEN= ''
 
@@ -76,10 +77,10 @@ stage('report image') {
 //         CF_BITBUCKET_HOST_URL= ''
 
         // Name of Jira integration
-        CF_JIRA_INTEGRATION= 'eti-jira'
+        CF_JIRA_INTEGRATION= 'jira'
 
         // Jira project filter
-        CF_JIRA_PROJECT_PREFIX= '[jira-project-prefix]'
+        CF_JIRA_PROJECT_PREFIX= 'CR'
 
         // String starting with the issue ID to associate with image
         CF_JIRA_MESSAGE= 'my message'
@@ -87,14 +88,14 @@ stage('report image') {
     }
     steps {
         sh '''
-        # add git branch
-        export CF_GIT_PROVIDER="${CF_GIT_PROVIDER:-github}"
-        WITHOUT_POSTFIX="${GIT_URL%.*}"
-        export CF_GIT_REPO="${WITHOUT_POSTFIX#*//*/}"
-        # slice branch name from repo/branch
-        export CF_GIT_BRANCH="${GIT_BRANCH#*/}"
-        env | cut -f 1 -d "=" | grep -E "^CF_"  > cf_env
-        docker run --env-file=cf_env "quay.io/codefresh/codefresh-report-image:latest"
+            # add git branch
+            export CF_GIT_PROVIDER="${CF_GIT_PROVIDER:-github}"
+            WITHOUT_POSTFIX="${GIT_URL%.*}"
+            export CF_GIT_REPO="${WITHOUT_POSTFIX#*//*/}"
+            # slice branch name from repo/branch
+            export CF_GIT_BRANCH="${GIT_BRANCH#*/}"
+            env | cut -f 1 -d "=" | grep -E "^CF_"  > cf_env
+            docker run --env-file=cf_env "quay.io/codefresh/codefresh-report-image:latest"
         '''
         }
     }
