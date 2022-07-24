@@ -8,54 +8,52 @@ pipeline {
             }
         }
         stage ('Build & Push ') {
+            environment {
+                CF_IMAGE=credentials('CF_IMAGE')
+            }
             steps {
-                echo 'Building'
-                sh 'ls -ltra'
+                sh 'echo "Building $CF_IMAGE"'
                 script {
                     def app
-                    app = docker.build("safficodefresh/test-report-image-jenkins")
+                    app = docker.build("${env.CF_IMAGE}")
                     // require credentials to be stored under DOCKERHUB
-                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKERHUB') {            
-                            app.push("${env.BUILD_NUMBER}")            
+                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKERHUB') {   
                             app.push("latest")        
                     }
                 }
                 sh '''
-                    IMAGE_NAME="safficodefresh/test-report-image-jenkins:$BUILD_NUMBER"
-                    docker pull $IMAGE_NAME
+                    # test we have image in repository.
+                    docker pull $CF_IMAGE
                     '''
             }
         }
         
         stage('report image') {
             environment {
-                CF_ENRICHERS = 'jira git'
-                CF_HOST = 'https://saffi.pipeline-team.cf-cd.com'
+                CF_IMAGE=credentials('CF_IMAGE')
+                CF_HOST = credentials('CF_RT_HOST')
                 CF_API_KEY = credentials('CF_API_KEY')
-                CF_IMAGE = "safficodefresh/test-report-image-jenkins:${env.BUILD_NUMBER}"
                 CF_CONTAINER_REGISTRY_INTEGRATION= 'docker'
                 CF_JIRA_INTEGRATION= 'jira'
                 CF_JIRA_MESSAGE= '''
                         A message with embedded issue ( i.e. CR-11027 )
-                        that would be use query jira for the ticket '''
+                        that would be use query jira for the ticket 
+                        '''
                 CF_JIRA_PROJECT_PREFIX = 'CR'
                 CF_GITHUB_TOKEN = credentials('CF_GITHUB_TOKEN')
+                CF_WORKFLOW_NAME="${env.JOB_NAME}"
+                CF_WORKFLOW_URL="${env.BUILD_URL}"
             }
             steps {
                 sh '''
-                    CF_WORKFLOW_NAME = "${env.JOB_NAME}"
-                    CF_WORKFLOW_URL = "${env.BUILD_URL}"
                     # add git branch
                     export CF_GIT_PROVIDER="${CF_GIT_PROVIDER:-github}"
-                    export CF_GIT_BRANCH="${GIT_BRANCH#*/}"
                     WITHOUT_POSTFIX="${GIT_URL%.*}"
                     export CF_GIT_REPO="${WITHOUT_POSTFIX#*//*/}"
-                    VERSION="0.0.83"
-                    echo "$(env)"
-
+                    # slice branch name from repo/branch
+                    export CF_GIT_BRANCH="${GIT_BRANCH#*/}"
                     env | cut -f 1 -d "=" | grep -E "^CF_"  > cf_env
-                    echo "Provided env vars: $(cat cf_env|xargs echo)"
-                    docker run --env-file=cf_env "quay.io/codefresh/codefresh-report-image:$VERSION"
+                    docker run --env-file=cf_env "quay.io/codefresh/codefresh-report-image:latest"
                 '''
             }
         }
