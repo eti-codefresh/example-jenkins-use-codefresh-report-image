@@ -37,7 +37,7 @@ stage('report image') {
 
         // Codefresh API key !! Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. !!
         // Documentation - https://www.jenkins.io/doc/book/using/using-credentials
-        CF_API_KEY= '54545454545454546.58555455'
+        CF_API_KEY= credentials('CF_API_KEY')
 
         // Image path to enrich
         CF_IMAGE= credentials('CF_IMAGE')
