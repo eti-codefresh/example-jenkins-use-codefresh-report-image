@@ -32,57 +32,57 @@ pipeline {
 stage('report image') {
     environment {
         // Name of runtime to implement the enrichment
-        CF_HOST= http://local.codefresh.io
+        CF_HOST= 'http://local.codefresh.io'
 
         // Codefresh API key !! Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. !!
         // Documentation - https://www.jenkins.io/doc/book/using/using-credentials
-        CF_API_KEY= 54545454545454546.58555455
+        CF_API_KEY= '54545454545454546.58555455'
 
         // Image path to enrich
-        CF_IMAGE= quay.io/eti-test/test:1.00
+        CF_IMAGE= 'quay.io/eti-test/test:1.00'
 
         // Name of Container registry integration
-        CF_CONTAINER_REGISTRY_INTEGRATION= test
+        CF_CONTAINER_REGISTRY_INTEGRATION= 'test'
 
         // The the git repository used for building the image
-        CF_GIT_REPO= 
+        CF_GIT_REPO= ''
 
         // The git integration type use (i.e. github)
-        CF_GIT_PROVIDER= 
+        CF_GIT_PROVIDER= ''
 
         // GitHub Access token !! Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. !!
         // Documentation - https://www.jenkins.io/doc/book/using/using-credentials
-        CF_GITHUB_TOKEN= 35454134144514541212121.2545225445/kbg
+        CF_GITHUB_TOKEN= '35454134144514541212121.2545225445/kbg'
 
         // When explicit authentication used: For gitlab use, authenticate with a gitlab-token !! Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. !!
         // Documentation - https://www.jenkins.io/doc/book/using/using-credentials
-        CF_GITLAB_TOKEN= 
+        CF_GITLAB_TOKEN= ''
 
         // Bitbucket username
-        CF_BITBUCKET_USERNAME= 
+        CF_BITBUCKET_USERNAME= ''
 
         // Bitbucket password !! Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. !!
         // Documentation - https://www.jenkins.io/doc/book/using/using-credentials
-        CF_BITBUCKET_PASSWORD= 
+        CF_BITBUCKET_PASSWORD= ''
 
         // Bitbucket server username
-        CF_BITBUCKET_USERNAME= 
+        CF_BITBUCKET_USERNAME= ''
 
         // Bitbucket server password !! Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. !!
         // Documentation - https://www.jenkins.io/doc/book/using/using-credentials
-        CF_BITBUCKET_PASSWORD= 
+        CF_BITBUCKET_PASSWORD= ''
 
         // Bitbucket server host url
-        CF_BITBUCKET_HOST_URL= 
+        CF_BITBUCKET_HOST_URL= ''
 
         // Name of Jira integration
-        CF_JIRA_INTEGRATION= eti-jira
+        CF_JIRA_INTEGRATION= 'eti-jira'
 
         // Jira project filter
-        CF_JIRA_PROJECT_PREFIX= [jira-project-prefix]
+        CF_JIRA_PROJECT_PREFIX= '[jira-project-prefix]'
 
         // String starting with the issue ID to associate with image
-        CF_JIRA_MESSAGE= my message
+        CF_JIRA_MESSAGE= 'my message'
 
     }
     steps {
