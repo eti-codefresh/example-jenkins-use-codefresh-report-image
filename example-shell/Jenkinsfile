@@ -30,7 +30,7 @@ pipeline {
         
 stage('report image') {
     environment {
-        # The URL to the cluster with the Codefresh runtime to integrate with.
+        // The URL to the cluster with the Codefresh runtime to integrate with.
         CF_HOST= http://local.codefresh.io
         # The key to authenticate the GitHub Actions user to Codefresh.
         CF_API_KEY= 54545454545454546.58555455 # Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. Documentation- https://www.jenkins.io/doc/book/using/using-credentials
