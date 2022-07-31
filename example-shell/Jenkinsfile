@@ -7,43 +7,43 @@ pipeline {
                 checkout scm 
             }
         }
-//         stage ('Build & Push ') {
-//             environment {
-//                 CF_IMAGE=credentials('CF_IMAGE')
-//             }
-//             steps {
-//                 sh 'echo "Building $CF_IMAGE"'
-//                 script {
-//                     def app
-//                     app = docker.build("${env.CF_IMAGE}")
-//                     // require credentials to be stored under DOCKERHUB
-//                     docker.withRegistry('https://registry.hub.docker.com', 'DOCKERHUB') {   
-//                             app.push("latest")        
-//                     }
-//                 }
-//                 sh '''
-//                     # test we have image in repository.
-//                     docker pull $CF_IMAGE
-//                     '''
-//             }
-//         }
+        stage ('Build & Push ') {
+            environment {
+                CF_IMAGE=credentials('CF_IMAGE')
+            }
+            steps {
+                sh 'echo "Building $CF_IMAGE"'
+                script {
+                    def app
+                    app = docker.build("${env.CF_IMAGE}")
+                    // require credentials to be stored under DOCKERHUB
+                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKERHUB') {   
+                            app.push("latest")        
+                    }
+                }
+                sh '''
+                    # test we have image in repository.
+                    docker pull $CF_IMAGE
+                    '''
+            }
+        }
         
 
 
 stage('report image') {
     environment {
         // Name of runtime to implement the enrichment
-        CF_HOST= 'https://mr-60c7443e37ca2730b9757992-e4c9118.cf-cd.com'
+        CF_HOST= credentials('CF_RT_HOST')
 
         // Codefresh API key !! Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. !!
         // Documentation - https://www.jenkins.io/doc/book/using/using-credentials
-        CF_API_KEY= '62dfffaf535bf608bd83cec2.2e6d481c04676ce15c0ec0df43bc5744'
+        CF_API_KEY= credentials('CF_API_KEY')
 
         // Image path to enrich
-        CF_IMAGE= 'quay.io/eti_zaguri/denis:10.0.0'
+        CF_IMAGE= credentials('CF_IMAGE')
 
         // Name of Container registry integration
-        CF_CONTAINER_REGISTRY_INTEGRATION= 'hosted-quay-new'
+        CF_CONTAINER_REGISTRY_INTEGRATION= 'docker'
 
 //         // The the git repository used for building the image
 //         CF_GIT_REPO= ''
@@ -53,7 +53,7 @@ stage('report image') {
 
         // GitHub Access token !! Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. !!
         // Documentation - https://www.jenkins.io/doc/book/using/using-credentials
-        CF_GITHUB_TOKEN= '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'
+        CF_GITHUB_TOKEN= credentials('CF_GITHUB_TOKEN')
 
 //         // When explicit authentication used: For gitlab use, authenticate with a gitlab-token !! Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. !!
 //         // Documentation - https://www.jenkins.io/doc/book/using/using-credentials
@@ -77,7 +77,7 @@ stage('report image') {
 //         CF_BITBUCKET_HOST_URL= ''
 
         // Name of Jira integration
-        CF_JIRA_INTEGRATION= 'eti-jira'
+        CF_JIRA_INTEGRATION= 'jira'
 
         // Jira project filter
         CF_JIRA_PROJECT_PREFIX= 'CR'
@@ -93,7 +93,7 @@ stage('report image') {
             WITHOUT_POSTFIX="${GIT_URL%.*}"
             export CF_GIT_REPO="${WITHOUT_POSTFIX#*//*/}"
             # slice branch name from repo/branch
-            export CF_GIT_BRANCH='main'
+            export CF_GIT_BRANCH="${GIT_BRANCH#*/}"
             env | cut -f 1 -d "=" | grep -E "^CF_"  > cf_env
             docker run --env-file=cf_env "quay.io/codefresh/codefresh-report-image:latest"
         '''
