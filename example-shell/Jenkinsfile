@@ -84,6 +84,7 @@ stage('report image') {
 
         // String starting with the issue ID to associate with image
         CF_JIRA_MESSAGE= 'my message'
+       
 //         CF_WORKFLOW_NAME="${env.JOB_NAME}"
 //         CF_WORKFLOW_URL="${env.BUILD_URL}"
 //             echo env.JOB_NAME
@@ -94,7 +95,9 @@ stage('report image') {
         sh '''
             echo $JOB_NAME
             echo $BUILD_URL
-            export CF_WORKFLOW_NAME=$JOB_NAME
+            echo ${CF_WORKFLOW_NAME:-$JOB_NAME}
+            
+            export CF_WORKFLOW_NAME=${CF_WORKFLOW_NAME:-$JOB_NAME}
             export CF_WORKFLOW_URL=$BUILD_URL
             # add git branch
             export CF_CI_TYPE="jenkins"
