@@ -33,11 +33,11 @@ pipeline {
 stage('report image') {
     environment {
         // Name of runtime to implement the enrichment
-        CF_HOST= credentials('CF_RT_HOST')
+        CF_HOST= 'https://mr-60c7443e37ca2730b9757992-e4c9118.cf-cd.com'
 
         // Codefresh API key !! Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. !!
         // Documentation - https://www.jenkins.io/doc/book/using/using-credentials
-        CF_API_KEY= credentials('CF_API_KEY')
+        CF_API_KEY= '62dfffaf535bf608bd83cec2.2e6d481c04676ce15c0ec0df43bc5744'
 
         // Image path to enrich
         CF_IMAGE= credentials('CF_IMAGE')
