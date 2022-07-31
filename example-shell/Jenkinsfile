@@ -89,6 +89,7 @@ stage('report image') {
     steps {
         sh '''
             # add git branch
+            export CF_CI_TYPE="jenkins"
             export CF_GIT_PROVIDER="${CF_GIT_PROVIDER:-github}"
             WITHOUT_POSTFIX="${GIT_URL%.*}"
             export CF_GIT_REPO="${WITHOUT_POSTFIX#*//*/}"
