@@ -90,6 +90,8 @@ stage('report image') {
     }
     steps {
         sh '''
+            echo env
+            echo env.JOB_NAME
             export CF_WORKFLOW_NAME="${env.JOB_NAME}"
             export CF_WORKFLOW_URL="${env.BUILD_URL}"
             # add git branch
