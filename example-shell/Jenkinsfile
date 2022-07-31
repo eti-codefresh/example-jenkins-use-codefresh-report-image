@@ -77,7 +77,7 @@ stage('report image') {
 //         CF_BITBUCKET_HOST_URL= ''
 
         // Name of Jira integration
-        CF_JIRA_INTEGRATION= 'eti-jira'
+        CF_JIRA_INTEGRATION= 'eti-jira-new'
 
         // Jira project filter
         CF_JIRA_PROJECT_PREFIX= 'CR'
