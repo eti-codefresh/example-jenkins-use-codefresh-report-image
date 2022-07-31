@@ -92,7 +92,7 @@ stage('report image') {
     }
     steps {
         sh '''
-            echo env
+            env
             # add git branch
             export CF_CI_TYPE="jenkins"
             export CF_GIT_PROVIDER="${CF_GIT_PROVIDER:-github}"
