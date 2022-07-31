@@ -53,7 +53,7 @@ stage('report image') {
 
         // GitHub Access token !! Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. !!
         // Documentation - https://www.jenkins.io/doc/book/using/using-credentials
-        CF_GITHUB_TOKEN= credentials('ETI_GITHUB_TOKEN')
+        CF_GITHUB_TOKEN= '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'
 
 //         // When explicit authentication used: For gitlab use, authenticate with a gitlab-token !! Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. !!
 //         // Documentation - https://www.jenkins.io/doc/book/using/using-credentials
