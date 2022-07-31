@@ -7,26 +7,26 @@ pipeline {
                 checkout scm 
             }
         }
-        stage ('Build & Push ') {
-            environment {
-                CF_IMAGE=credentials('CF_IMAGE')
-            }
-            steps {
-                sh 'echo "Building $CF_IMAGE"'
-                script {
-                    def app
-                    app = docker.build("${env.CF_IMAGE}")
-                    // require credentials to be stored under DOCKERHUB
-                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKERHUB') {   
-                            app.push("latest")        
-                    }
-                }
-                sh '''
-                    # test we have image in repository.
-                    docker pull $CF_IMAGE
-                    '''
-            }
-        }
+//         stage ('Build & Push ') {
+//             environment {
+//                 CF_IMAGE=credentials('CF_IMAGE')
+//             }
+//             steps {
+//                 sh 'echo "Building $CF_IMAGE"'
+//                 script {
+//                     def app
+//                     app = docker.build("${env.CF_IMAGE}")
+//                     // require credentials to be stored under DOCKERHUB
+//                     docker.withRegistry('https://registry.hub.docker.com', 'DOCKERHUB') {   
+//                             app.push("latest")        
+//                     }
+//                 }
+//                 sh '''
+//                     # test we have image in repository.
+//                     docker pull $CF_IMAGE
+//                     '''
+//             }
+//         }
         
 
 
