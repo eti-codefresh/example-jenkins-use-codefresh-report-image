@@ -86,14 +86,13 @@ stage('report image') {
         CF_JIRA_MESSAGE= 'my message'
 //         CF_WORKFLOW_NAME="${env.JOB_NAME}"
 //         CF_WORKFLOW_URL="${env.BUILD_URL}"
-
+//             echo env.JOB_NAME
+//             export CF_WORKFLOW_NAME="${env.JOB_NAME}"
+//             export CF_WORKFLOW_URL="${env.BUILD_URL}"
     }
     steps {
         sh '''
             echo env
-//             echo env.JOB_NAME
-//             export CF_WORKFLOW_NAME="${env.JOB_NAME}"
-//             export CF_WORKFLOW_URL="${env.BUILD_URL}"
             # add git branch
             export CF_CI_TYPE="jenkins"
             export CF_GIT_PROVIDER="${CF_GIT_PROVIDER:-github}"
