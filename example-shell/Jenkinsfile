@@ -84,7 +84,7 @@ stage('report image') {
 
         // String starting with the issue ID to associate with image
         CF_JIRA_MESSAGE= 'my message'
-//         CF_GIT_BRANCH= 'bla'
+        CF_GIT_BRANCH= 'bla'
 //         CF_WORKFLOW_NAME = 'test-ci'
        
 //         CF_WORKFLOW_NAME="${env.JOB_NAME}"
@@ -102,7 +102,7 @@ stage('report image') {
             export CF_CI_TYPE="jenkins"
             export CF_GIT_PROVIDER="${CF_GIT_PROVIDER:-github}"
             WITHOUT_POSTFIX="${GIT_URL%.*}"
-            export CF_GIT_REPO="${WITHOUT_POSTFIX#*//*/}"
+            export CF_GIT_REPO="${CF_GIT_REPO:-${WITHOUT_POSTFIX#*//*/}}"
             # slice branch name from repo/branch
             export CF_GIT_BRANCH="${CF_GIT_BRANCH:-${GIT_BRANCH#*/}}"
             env | cut -f 1 -d "=" | grep -E "^CF_"  > cf_env
