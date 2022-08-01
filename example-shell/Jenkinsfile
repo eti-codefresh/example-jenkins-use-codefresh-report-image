@@ -104,7 +104,7 @@ stage('report image') {
             WITHOUT_POSTFIX="${GIT_URL%.*}"
             export CF_GIT_REPO="${WITHOUT_POSTFIX#*//*/}"
             # slice branch name from repo/branch
-            export CF_GIT_BRANCH="${CF_GIT_BRANCH:-$GIT_BRANCH#*/}"
+            export CF_GIT_BRANCH="${CF_GIT_BRANCH:-${GIT_BRANCH#*/}}"
             env | cut -f 1 -d "=" | grep -E "^CF_"  > cf_env
             docker run --env-file=cf_env "quay.io/codefresh/codefresh-report-image:latest"
         '''
