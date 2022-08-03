@@ -89,11 +89,11 @@ stage('report image') {
     }
     steps {
         sh '''
-            # add workflow details
-            export CF_WORKFLOW_NAME=${CF_WORKFLOW_NAME:-$JOB_NAME}
-            export CF_WORKFLOW_URL=${CF_WORKFLOW_URL:-$BUILD_URL}
-            # add git branch
             export CF_CI_TYPE="jenkins"
+            # add workflow details
+            export CF_WORKFLOW_NAME="${CF_WORKFLOW_NAME:-$JOB_NAME}"
+            export CF_WORKFLOW_URL="${CF_WORKFLOW_URL:-$BUILD_URL}"
+            # add git branch
             export CF_GIT_PROVIDER="${CF_GIT_PROVIDER:-github}"
             WITHOUT_POSTFIX="${GIT_URL%.*}"
             export CF_GIT_REPO="${CF_GIT_REPO:-${WITHOUT_POSTFIX#*//*/}}"
