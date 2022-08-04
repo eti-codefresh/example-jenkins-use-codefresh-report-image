@@ -9,7 +9,7 @@ pipeline {
         }
         stage ('Build & Push ') {
             environment {
-                CF_IMAGE= 'quay.io/eti_zaguri/NEW:9.0.8'
+                CF_IMAGE= 'quay.io/eti_zaguri/new:9.0.8'
             }
             steps {
                 sh 'echo "Building $CF_IMAGE"'
@@ -40,7 +40,7 @@ stage('report image') {
         CF_API_KEY= '62dfffaf535bf608bd83cec2.2e6d481c04676ce15c0ec0df43bc5744'
 
         // Image path to enrich
-        CF_IMAGE= 'quay.io/eti_zaguri/NEW:9.0.8'
+        CF_IMAGE= 'quay.io/eti_zaguri/new:9.0.8'
 
         // Name of Container registry integration
         CF_CONTAINER_REGISTRY_INTEGRATION= 'hosted-quay-new'
